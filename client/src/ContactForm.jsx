@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button, FormControl, FormLabel, Input, Textarea, FormErrorMessage, Flex, Heading } from '@chakra-ui/react';
 import axios from 'axios';
 
-export const BASE_URL = import.meta.env.MODE === "development" ? "http://127.0.0.1:5000/submit" : "/submit";
+export const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5000/" : "/submit";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
