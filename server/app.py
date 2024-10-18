@@ -1,14 +1,17 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify,send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+import os
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app,origins="*")
 
 # SQLite Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///contacts.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+client_folder = os.path.join(os.getcwd(),"..","client")
+dist_folder = os.path.join(client_folder,"dist")
 
 # Contact model
 class Contact(db.Model):
@@ -20,6 +23,13 @@ class Contact(db.Model):
 # Create the database
 with app.app_context():
     db.create_all()
+
+@app.route("/",defaults={"filename":""})
+@app.route("/<path:filename>")
+def index(filename):
+    if not filename:
+        filename = "index.html"
+    return send_from_directory(dist_folder,filename)
 
 @app.route('/submit', methods=['POST'])
 def submit_form():
